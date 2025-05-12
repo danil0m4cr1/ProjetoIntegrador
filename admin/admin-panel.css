@@ -138,7 +138,7 @@ label {
     margin-top: 1rem;
 }
 
-.delete-button button {
+.delete-button input {
     width: 116px;
     height: 38px;
     background-color: rgba(255, 255, 255, 0);
@@ -149,7 +149,7 @@ label {
     cursor: pointer;
 }
 
-.delete-button button:hover {
+.delete-button input:hover {
     background-color: rgba(194, 194, 194, 0.4);
 }
 
