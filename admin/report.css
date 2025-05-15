@@ -44,6 +44,10 @@ li:last-child {
     text-decoration: none;
 }
 
+.center-menu a:hover {
+    text-decoration: underline;
+}
+
 img {
     width: 247px;
     height: 88px;
@@ -51,7 +55,7 @@ img {
 
 main {
     width: 100%;
-    height: calc(100vh - 97px);
+    height: calc(100vh - 98px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -70,16 +74,20 @@ main {
 .section-title h2 {
     font-size: 36px;
     font-weight: 400;
-    padding-bottom: 0.5rem;
+    padding: 0.6rem;
+    text-align: center;
 }
 
 .table-container {
     display: flex;
+    width: 80%;
+    overflow-x: auto;
 }
 
 table {
-    width: 100%;
+    width: 80%;
     border-collapse: collapse;
+    margin: 0 auto;
 }
 
 .table-container th{
@@ -105,6 +113,32 @@ table {
     color: #32C505;
 }
 
+button {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border: 0;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0);
+    border: 1px solid #FF0000;
+    border-radius: 15px;
+    color: #FF0000;
+}
+
+button:hover {
+    background-color: rgba(216, 216, 216, 0.2);
+}
+
+@media screen and (max-width: 425px){
+    .section-title > h2 {
+        font-size: 32px;
+    }
+
+    section.section-container {
+        width: 90%;
+    }
+}
+
 @media screen and (max-width: 850px){
     header {
         padding: 0;
@@ -125,4 +159,17 @@ table {
         align-items: center;
     }
 
+    section.section-container {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 1500px){
+    .section-container {
+        width: 60%;
+    }
+
+    .table-container {
+        margin: 0 auto;
+    }
 }

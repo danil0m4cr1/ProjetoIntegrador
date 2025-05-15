@@ -44,6 +44,10 @@ li:last-child {
     text-decoration: none;
 }
 
+.center-menu a:hover {
+    text-decoration: underline;
+}
+
 img {
     width: 247px;
     height: 88px;

@@ -67,7 +67,7 @@ registerForm.addEventListener('submit', (e)=>{ // Envia o formulário com todas 
     amtFormValue = parseInt(registerForm.amt.value);
 
     if(isNameValid && isCodValid && isDescValid && isAmtValid && validateInput == 1){ // Cadastra peças
-        index = dados['cod'].indexOf(codFormValue);
+        index = dados['cod'].lastIndexOf(codFormValue);
         if(nameFormValue != dados['name'][index] && index != -1){
             document.querySelectorAll(".register .invalid-name")[2].classList.add("err-msg");
             return false;
@@ -101,7 +101,8 @@ function verifyInfoDelete(){ // Verifica as informações do formulário de remo
 
     const invalidCode = document.querySelectorAll(".delete-form .invalid-code");
     const invalidAmt = document.querySelectorAll(".delete-form .invalid-amt");
-    let findIndCod = dados["cod"].indexOf(codDelValue);
+
+    let findIndCod = dados["cod"].lastIndexOf(codDelValue);
 
     if(findIndCod != -1){ // Verifica se o código existe
         invalidCode.forEach((el)=> el.classList.remove("err-msg"));
