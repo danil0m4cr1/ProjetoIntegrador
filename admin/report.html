@@ -26,7 +26,6 @@
         </nav>
     </header>
     <main>
-        <canvas id="myChart" style="display: none;"></canvas>
         <section class="section-container">
             <div class="section-title">
                 <h2>Relatório Simplificado</h2>
@@ -35,9 +34,14 @@
             <div class="table-container">
                 <table></table>
             </div>
-            <button onclick="createPDF()">Gerar Relatório em PDF</button>
+            <select name="typeGraphic" id="typeGraphic">
+                <option selected disabled value="disabled">Escolha uma opção de gráfico</option>
+                <option value="mov">Movimentação Geral</option>
+                <option value="stock">Estoque de Peças</option>
+            </select>
+            <button onclick="initialize()">Gerar Relatório em PDF</button>
         </section>
-
+        <canvas id="myChart" style="display: none;"></canvas>
     </main>
     <script src="report.js"></script>
     <script src="exportPDF.js"></script>

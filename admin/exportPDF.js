@@ -1,76 +1,148 @@
-function createPDF(){
+let grafico = null;
+
+function initialize(){
     const estoqueDados = localStorage.getItem("estoqueDados");
     if(estoqueDados){
-        let names = [];
-        let stock = [];
         let input = 0;
         let output = 0;
+        const select = document.querySelector("#typeGraphic");
+        const selected = select.value;
+        let type = null;
         const data = JSON.parse(estoqueDados);
-        // data.name.forEach((nome, i) => {
-        //     names.push(nome);
-        //     stock.push(data.estoque[i]);
-        // });
-
-        for(let i = 0; i < data.status.length; i++){
-            if(data.status[i] == 'entrou'){
-                input += data.amt[i];
-            } else {
-                output += data.amt[i];
-            }
-        }
         
-        // -----> Terminar a parte do grafico e PDF <-----
-        // // Importe a biblioteca jspdf
-        // const { jsPDF } = window.jspdf;
+        if(selected == 'mov'){
+            type = 'mov';
+        } else if(selected == 'stock'){
+            type = 'stock';
+        } else {
+            alert("Insira um tipo de relatório!");
+            return false;
+        }
 
-        // // Defina os dados do gráfico
-        // const dadosTeste = {
-        // labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-        // datasets: [
-        //     {
-        //     label: 'Vendas',
-        //     data: [10, 20, 15, 30, 25, 35],
-        //     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        //     borderColor: 'rgba(255, 99, 132, 1)',
-        //     borderWidth: 1
-        //     }
-        // ]
-        // };
+        function corAleatoria() {
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            return `rgba(${r}, ${g}, ${b}, 0.7)`;
+        }
 
-        // // Defina as opções do gráfico
-        // const options = {
-        // plugins: {
-        //     legend: {
-        //     display: false
-        //     }
-        // },
-        // scales: {
-        //     y: {
-        //     beginAtZero: true
-        //     }
-        // }
-        // };
+        if(grafico){
+            grafico.destroy();
+        }
 
-        // // Crie um novo documento PDF
-        // const doc = new jsPDF();
+        createPDF();
+        async function createPDF() {
+            // Variáveis para criação do gráfico
+            const canvas = document.getElementById('myChart');
+            const ctx = canvas.getContext('2d');
+            const codigosGetLabel = [];
+            const codigosGetInfo = [];
 
-        // // Crie um novo gráfico com a Chart.js
-        // const myChart = new Chart(document.getElementById('myChart'), {
-        // type: 'line', // ou outro tipo de gráfico
-        // data: dadosTeste,
-        // options: options
-        // });
+            canvas.width = 500;
+            canvas.height = 300;
 
-        // // Obtenha a imagem do gráfico no formato base64
-        // const imgData = myChart.toBase64Image();
+            let labels = [];
+            let dataGraphic = [];
+            let bgColor = [];
 
-        // // Adicione a imagem ao PDF
-        // doc.addImage(imgData, 'PNG', 10, 10, 150, 100);
+            for(let i = 0; i < data.status.length; i++){ // Lógica para relatório de entradas e saídas gerais dos produtos
+                if(data.status[i] == 'entrou'){
+                    input += data.amt[i];
+                } else {
+                    output += data.amt[i];
+                }
+            }
 
-        // // Salve o PDF
-        // doc.save('grafico.pdf');
+            if(selected == 'stock'){ // Configurações para o relatório de estoque
 
-        // // Opcional: Remova o canvas do HTML
-        // document.getElementById('myChart').remove();
+                data.cod.forEach((item, i)=>{
+                    const searchGetLabel = data.cod.lastIndexOf(item);
+                    if(codigosGetLabel.indexOf(searchGetLabel) == -1){
+                        codigosGetLabel.push(searchGetLabel);
+                        labels.push(data.name[i]);
+                        dataGraphic.push(data.estoque[i]);
+                        bgColor.push(corAleatoria());
+                    }
+                })
+            } else {
+                labels = ['Entrada Geral', 'Saída Geral'];
+                dataGraphic = [input, output];
+                bgColor = ['#32C505', '#FF0000'];
+            }
+
+            // Cria o gráfico
+            grafico = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataGraphic,
+                        backgroundColor: bgColor
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    animation: false,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Aguarda a renderização do gráfico
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            // Converte canvas para imagem
+            const imagemBase64 = canvas.toDataURL('image/png');
+
+            // Cria PDF
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            let yPosition = 150; // Posição vertical inicial
+            
+            if(selected == 'mov'){ // Formatando o relatório com base na opção de movimentações gerais
+                pdf.setFontSize(18);
+                pdf.text("Relatório de Movimentação Geral com Gráfico", 40, 10);
+                pdf.addImage(imagemBase64, 'PNG', 10, 20, 180, 120);
+                pdf.setFontSize(12);
+                pdf.text(`Entrada Geral - Quantidade: ${input}`, 10, yPosition); // Adiciona linha com os dados
+                yPosition += 10; // Move para a próxima linha
+                pdf.text(`Saída Geral - Quantidade: ${output}`, 10, yPosition);
+            } else { // Formatando o relatório com base na opção de estoque de cada produto
+                pdf.setFontSize(18);
+                pdf.text("Relatório de Estoque de Peças com Gráfico", 40, 10);
+                pdf.addImage(imagemBase64, 'PNG', 10, 20, 180, 120);
+                pdf.setFontSize(12);
+                data.cod.forEach(item =>{ // Procura qual o estoque mais recente do produto
+                    const searchGetInfo = data.cod.lastIndexOf(item);
+                    if(codigosGetInfo.indexOf(searchGetInfo) == -1){
+                        codigosGetInfo.push(searchGetInfo);
+                    }
+                    
+                })
+                for(let i = 0; i < codigosGetInfo.length; i++){
+                    pdf.text(`Peça: ${data.name[codigosGetInfo[i]]} - Estoque: ${data.estoque[codigosGetInfo[i]]}`, 10, yPosition);
+                    if(data.desc[codigosGetInfo[i]] != ''){ // Caso o produto tenha descrição, ela será inserida
+                        yPosition += 5;
+                        pdf.text(`Descrição: ${data.desc[codigosGetInfo[i]]}`, 10, yPosition);
+                    }
+                    yPosition += 10;
+                }
+            }
+
+            // Salva PDF
+            pdf.save("relatório.pdf");
+
+        }
+
     }
 }
