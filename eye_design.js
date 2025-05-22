@@ -10,3 +10,14 @@ function seePwd(){
         })
     })
 }
+
+// $(window).ready(function(){
+//     let looking = $('.fa-regular');
+//     looking.each(icon => {
+//         icon.click(()=>{
+//             const input = $('input[name=password');
+//             input.type = input.type === 'password' ? 'text' : 'password';
+//             icon.toggleClass('fa-eye');
+//         })
+//     })
+// })
