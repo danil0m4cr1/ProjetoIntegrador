@@ -85,7 +85,7 @@ label {
     padding-top: 0.8rem;
 }
 
-.btn {
+.button-register {
     width: 156px;
     height: 38px;
     background-color: rgba(255, 255, 255, 0);
@@ -95,7 +95,7 @@ label {
     cursor: pointer;
 }
 
-.btn:hover {
+.button-register:hover {
     background-color: rgba(194, 194, 194, 0.4);
 }
 
@@ -118,6 +118,10 @@ label {
 
 .delete-button input:hover {
     background-color: rgba(194, 194, 194, 0.4);
+}
+
+p {
+    margin: 0;
 }
 
 /* Comeco do conteudo historico de movimentacoes */

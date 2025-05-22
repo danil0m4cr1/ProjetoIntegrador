@@ -1,10 +1,13 @@
 main {
     width: 100%;
-    margin: 1rem 0;
-    height: auto;
+    height: calc(100vh - 120px);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+p {
+    margin: 0;
 }
 
 .section-container {
@@ -15,6 +18,12 @@ main {
     padding: 1.5rem 0;
     border: 1px solid black;
     border-radius: 15px;
+}
+
+.nodata {
+    font-size: 21px;
+    padding: 0 1rem;
+    text-align: center;
 }
 
 .section-title h2 {
@@ -97,7 +106,7 @@ button:hover {
 @media screen and (max-width: 850px){
     main {
         height: auto;
-        margin: 2rem 0;
+        padding-top: 2rem;
     }
 
     section.section-container {
