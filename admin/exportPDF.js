@@ -131,7 +131,7 @@ function initialize(){
                 })
                 for(let i = 0; i < codigosGetInfo.length; i++){
                     pdf.text(`Peça: ${data.name[codigosGetInfo[i]]} - Estoque: ${data.estoque[codigosGetInfo[i]]}`, 10, yPosition);
-                    if(data.desc[codigosGetInfo[i]] != ''){ // Caso o produto tenha descrição, ela será inserida
+                    if(data.desc[codigosGetInfo[i]] != null){ // Caso o produto tenha descrição, ela será inserida
                         yPosition += 5;
                         pdf.text(`Descrição: ${data.desc[codigosGetInfo[i]]}`, 10, yPosition);
                     }
