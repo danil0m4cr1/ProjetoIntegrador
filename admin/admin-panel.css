@@ -81,7 +81,7 @@ label {
 .button-register {
     width: 156px;
     height: 38px;
-    background-color: rgba(255, 255, 255, 0);
+    background-color: white;
     color: black;
     border-radius: 10px;
     border: 1px solid black;
